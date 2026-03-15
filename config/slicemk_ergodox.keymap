@@ -10,6 +10,15 @@
 #include <dt-bindings/zmk/rgb.h>
 
 / {
+	behaviors {
+		comma_qmark: comma_qmark {
+			compatible = "zmk,behavior-mod-morph";
+			#binding-cells = <0>;
+			bindings = <&kp COMMA>, <&kp QUESTION>;
+			mods = <(MOD_LSFT|MOD_RSFT)>;
+		};
+	};
+
 	keymap {
 		compatible = "zmk,keymap";
 		layer_0 {
@@ -18,7 +27,7 @@
 				&kp DELETE           &kp DOLLAR       &kp ASTERISK &kp MINUS      &kp UNDERSCORE  &kp EQUAL                &mo LAYER_FUNC &mo LAYER_FUNC &kp LEFT_BRACKET          &kp RIGHT_BRACKET &kp LEFT_PARENTHESIS &kp RIGHT_PARENTHESIS &kp LEFT_BRACE    &kp RIGHT_BRACE
 				&kp TAB              &kp Q            &kp W        &kp E          &kp R           &kp T                    &none          &none          &kp Y                     &kp U             &kp I                &kp O                 &kp P             &kp GRAVE
 				&mo LAYER_NUMSYM     &kp A            &kp S        &kp D          &kp F           &kp G                                                  &kp H                     &kp J             &kp K                &kp L                 &kp SEMICOLON     &mo LAYER_NUMSYM
-				&kp LEFT_SHIFT       &kp Z            &kp X        &kp C          &kp V           &kp B                    &none          &none          &kp N                     &kp M             &kp COMMA            &kp PERIOD            &kp SLASH         &kp RIGHT_SHIFT
+				&kp LEFT_SHIFT       &kp Z            &kp X        &kp C          &kp V           &kp B                    &none          &none          &kp N                     &kp M             &comma_qmark         &kp PERIOD            &kp SLASH         &kp RIGHT_SHIFT
 				&kp LC(LS(LEFT_ALT)) &kp LEFT_CONTROL &kp LEFT_ALT &kp LEFT_ARROW &kp RIGHT_ARROW                                                                                  &kp DOWN_ARROW    &kp UP_ARROW         &kp RIGHT_ALT         &kp RIGHT_CONTROL &kp RC(RS(RIGHT_ALT))
 				                                                                                  &kp LC(LS(LA(LEFT_GUI))) &kp HOME       &kp PAGE_UP    &kp RC(RS(RA(RIGHT_GUI)))
 				                                                                  &kp BACKSPACE   &kp ESCAPE               &kp END        &kp PAGE_DOWN  &kp RETURN                &kp SPACE
