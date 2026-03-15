@@ -1,68 +1,68 @@
-This repository contains the default ZMK user configuration for the [ErgoDox
-Wireless](https://www.slicemk.com/pages/ergodox-wireless) keyboard. While the
-[SliceMK Keymap Configurator](https://config.slicemk.com/zmk/) is recommended
-for the majority of users, the GitHub Actions workflow provides some additional
-options for customization.
+# ErgoDox Wireless ZMK Config
 
-If you have questions, feel free to join the [SliceMK
-Discord](https://discord.gg/FQvyd7BAaA).
+Custom ZMK keymap for the [SliceMK ErgoDox Wireless](https://www.slicemk.com/pages/ergodox-wireless) (202205 Green, dongleless).
 
-# Getting Started
+## Layout
 
-- Fork this repository on GitHub.
-- Modify the `board` and `shield` values in `build.yaml` to match the ZMK build
-  target based on your hardware (see below).
+Three layers with a focus on keeping common programming symbols accessible without stretching.
 
-# Customization
+### Main Layer
 
-- To modify your keymap, edit `config/slicemk_ergodox.keymap`.
-- If you are using a dongle, add custom ZMK configuration options to
-  `config/slicemk_ergodox_dongle.conf`. If you are not using a dongle, custom
-  options should instead go in `config/slicemk_ergodox_leftcentral.conf`.
-- To use with a custom ZMK fork, edit `config/west.yml`.
+Standard QWERTY with several customizations:
 
-# Board/Shield
+- **Top row**: `DEL`, `$`, `*`, `-`, `_`, `=` on the left; `[]`, `()`, `{}` pairs on the right — all programming brackets on the right hand.
+- **Custom shift keys**: Comma shifts to `?`, period shifts to `!`, slash shifts to `\`. Keeps punctuation fluid without reaching for the number row.
+- **Thumb clusters**: Backspace and Escape under the left thumb; Enter and Space under the right. Home/End and PgUp/PgDn on the outer thumb keys.
+- **Hyper keys**: `Ctrl+Shift+Alt` in the bottom-left and bottom-right corners; `Ctrl+Shift+Alt+Gui` on the inner thumb keys — useful for global shortcuts that won't collide with any application.
+- **Modifiers**: Shift on the pinkies, Ctrl and Alt on the bottom row, Gui on the lowest thumb position.
+- **`sys_off`** on the top-left key to put the keyboard to sleep.
 
-If you are not sure which dongle or PCB version you have, please put your
-dongle/PCB into bootloader mode and check the "Model" value within the
-`INFO_UF2.TXT` file.
+### NumSym Layer (hold left or right home-row key)
 
-GitHub Actions will only build the firmware for your central. Please download
-the firmware for your peripheral(s)
-[here](https://docs.slicemk.com/keyboard/ergodox/peripheral/).
+- **Right hand**: Full numpad (0–9) with `/`, `*`, `+`, `-`, `=`.
+- **Left hand**: Remaining symbols — `%`, `^`, `|`, `&`, `#`, `@`, `<`, `>`.
 
-Here are some of the common dongle options:
+### Function Layer (hold either key flanking the top row)
 
-- **Raytac MDBT50Q-RX Green**
-	- Board `raytac_mdbt50q_rx_green`
-	- Shield `slicemk_ergodox_dongle`
-- **Raytac MDBT50Q-RX** (if it does not say "green")
-	- Board `raytac_mdbt50q_rx`
-	- Shield `slicemk_ergodox_dongle`
-- **Nordic nRF52840 Dongle**
-	- Board `nordic_nrf52840_dongle_slicemk`
-	- Shield `slicemk_ergodox_dongle`
-- **SliceMK USB C Dongle MDBT50Q Blue**
-	- Board `slicemk_usbc_mdbt50q_blue`
-	- Shield `slicemk_ergodox_dongle`
+Media controls on the right hand: previous/play-pause/next, volume down/mute/up. Everything else is disabled.
 
-Here are some of the common dongleless options:
+## Building
 
-- **SliceMK ErgoDox Wireless 202104**
-	- Board `slicemk_ergodox_202104`
-	- Shield `slicemk_ergodox_leftcentral`
-- **SliceMK ErgoDox Wireless 202108 Blue**
-	- Board `slicemk_ergodox_202108_blue_left`
-	- Shield `slicemk_ergodox_leftcentral`
-- **SliceMK ErgoDox Wireless 202108 Green**
-	- Board `slicemk_ergodox_202108_green_left`
-	- Shield `slicemk_ergodox_leftcentral`
-- **SliceMK ErgoDox Wireless 202109**
-	- Board `slicemk_ergodox_202109`
-	- Shield `slicemk_ergodox_leftcentral`
-- **SliceMK ErgoDox Wireless 202205 Green**
-	- Board `slicemk_ergodox_202205_green_left`
-	- Shield `slicemk_ergodox_leftcentral`
-- **SliceMK ErgoDox Wireless 202207 Green**
-	- Board `slicemk_ergodox_202207_green_left`
-	- Shield `slicemk_ergodox_leftcentral`
+Requirements: macOS with [Homebrew](https://brew.sh). The build script installs everything else automatically (cmake, ninja, dtc, the Zephyr SDK + ARM toolchain, west, and Python dependencies).
+
+```
+./build.sh
+```
+
+This produces `config/zmk-left.uf2`.
+
+## Flashing
+
+The left and right halves are flashed separately. The right half runs peripheral firmware (download from [SliceMK](https://docs.slicemk.com/keyboard/ergodox/peripheral/)). The left half runs the firmware built here.
+
+**Important**: Check your PCB version before flashing. Put the half into bootloader mode and open `INFO_UF2.TXT` on the drive to verify. Using firmware for the wrong PCB version can damage hardware.
+
+### Flash the right half (peripheral)
+
+1. Connect the **right half** via USB.
+2. Double-press the reset button within 500ms (or hold the user button while plugging in USB).
+3. A drive named **SliceMK** appears.
+4. Copy the peripheral `.uf2` file onto the drive. It ejects automatically when done.
+
+### Flash the left half (central)
+
+1. Connect the **left half** via USB.
+2. Double-press the reset button within 500ms.
+3. Copy `config/zmk-left.uf2` onto the **SliceMK** drive.
+
+Do not put both halves into bootloader mode at the same time — they both appear as "SliceMK" and your OS won't distinguish them.
+
+The OS may report an error about the drive ejecting unexpectedly. This is normal.
+
+## Customization
+
+- Edit the keymap: `config/slicemk_ergodox.keymap`
+- Edit ZMK options: `config/slicemk_ergodox_leftcentral.conf`
+- Change the ZMK fork: `config/west.yml`
+
+For questions, join the [SliceMK Discord](https://discord.gg/FQvyd7BAaA).
