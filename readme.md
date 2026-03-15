@@ -24,40 +24,35 @@ Standard QWERTY with several customizations:
 
 ### Function Layer (hold either key flanking the top row)
 
-Media controls on the right hand: previous/play-pause/next, volume down/mute/up. Everything else is disabled.
+- **Left hand**: Media controls (prev/play/next on W/E/R, vol down/mute/vol up on S/D/F) and brightness (up on T, down on G).
+- **Right hand**: F-keys mirroring the numpad layout — F7/F8/F9 on top, F4/F5/F6 on home, F1/F2/F3 on bottom, with F10/F11/F12 on the inner column.
 
-## Building
+## Building and Flashing
 
-Requirements: macOS with [Homebrew](https://brew.sh). The build script installs everything else automatically (cmake, ninja, dtc, the Zephyr SDK + ARM toolchain, west, and Python dependencies).
+Requirements: macOS with [Homebrew](https://brew.sh) and Python 3. The build script installs everything else automatically (cmake, ninja, dtc, the Zephyr SDK + ARM toolchain, west, and Python dependencies).
 
 ```
-./build.sh
+# Build the left-side firmware
+./build.sh build
+
+# Build and update west modules
+./build.sh build --upgrade
+
+# Flash the left half (interactive — prompts you to enter bootloader mode)
+./build.sh flash
+
+# Build then flash in one step
+./build.sh flash --build
+
+# Flash the right half (downloads peripheral firmware from SliceMK)
+./build.sh flash --right
 ```
 
-This produces `config/zmk-left.uf2`.
+**Important**: Check your PCB version before flashing. Put the half into bootloader mode and open `INFO_UF2.TXT` on the SliceMK drive to verify. Using firmware for the wrong PCB version can damage hardware.
 
-## Flashing
-
-The left and right halves are flashed separately. The right half runs peripheral firmware (download from [SliceMK](https://docs.slicemk.com/keyboard/ergodox/peripheral/)). The left half runs the firmware built here.
-
-**Important**: Check your PCB version before flashing. Put the half into bootloader mode and open `INFO_UF2.TXT` on the drive to verify. Using firmware for the wrong PCB version can damage hardware.
-
-### Flash the right half (peripheral)
-
-1. Connect the **right half** via USB.
-2. Double-press the reset button within 500ms (or hold the user button while plugging in USB).
-3. A drive named **SliceMK** appears.
-4. Copy the peripheral `.uf2` file onto the drive. It ejects automatically when done.
-
-### Flash the left half (central)
-
-1. Connect the **left half** via USB.
-2. Double-press the reset button within 500ms.
-3. Copy `config/zmk-left.uf2` onto the **SliceMK** drive.
+The flash command will prompt you to plug in the keyboard half via USB and double-press the reset button. It automatically detects the SliceMK volume, copies the firmware, and waits for the volume to eject. The OS may report an eject error — this is normal.
 
 Do not put both halves into bootloader mode at the same time — they both appear as "SliceMK" and your OS won't distinguish them.
-
-The OS may report an error about the drive ejecting unexpectedly. This is normal.
 
 ## Customization
 

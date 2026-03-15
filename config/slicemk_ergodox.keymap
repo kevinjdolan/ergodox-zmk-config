@@ -62,14 +62,14 @@
 		layer_2 {
 			bindings = <
 				&sys_off
-				&none &none &none &none &none &none &none &none &none &none             &none            &none           &none &none
-				&none &none &none &none &none &none &none &none &none &kp C_PREVIOUS    &kp C_PLAY_PAUSE &kp C_NEXT      &none &none
-				&none &none &none &none &none &none             &none &kp C_VOLUME_DOWN &kp C_MUTE       &kp C_VOLUME_UP &none &none
-				&none &none &none &none &none &none &none &none &none &none             &none            &none           &none &none
-				&none &none &none &none &none                         &none             &none            &none           &none &none
-				                              &none &none &none &none
-				                        &none &none &none &none &none &none
-				                                    &none &none
+				&none &none &none             &none            &none           &none            &none &none &none   &none   &none   &none   &none   &none
+				&none &none &kp C_PREVIOUS    &kp C_PLAY_PAUSE &kp C_NEXT      &kp C_BRI_UP     &none &none &kp F12 &kp F7  &kp F8  &kp F9  &none   &none
+				&none &none &kp C_VOLUME_DOWN &kp C_MUTE       &kp C_VOLUME_UP &kp C_BRI_DN                 &kp F11 &kp F4  &kp F5  &kp F6  &none   &none
+				&none &none &none             &none            &none           &none            &none &none &kp F10 &kp F1  &kp F2  &kp F3  &none   &none
+				&none &none &none             &none            &none                                        &none   &none   &none   &none   &none
+				                                                              &none &none &none &none
+				                                                        &none &none &none &none &none   &none
+				                                                                    &none &none
 			>;
 		};
 	};
