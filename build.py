@@ -152,7 +152,7 @@ def flash(right, do_build, upgrade):
         raise click.ClickException(f"{uf2} not found. Run 'build' first.")
 
     click.secho(f"1. Plug the {side_label} half of the keyboard in via USB.", fg="yellow")
-    click.secho("2. Double-press the reset button within 500ms.", fg="yellow")
+    click.secho("2. Double-press the reset button (S2) within 500ms.", fg="yellow")
     click.secho("3. Wait for the LED to turn solid green (bootloader mode).", fg="yellow")
     click.echo()
     click.echo("Waiting for SliceMK volume to appear...")

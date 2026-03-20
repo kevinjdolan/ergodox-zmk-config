@@ -1,6 +1,7 @@
 #define LAYER_MAIN 0
 #define LAYER_NUMSYM 1
 #define LAYER_FUNC 2
+#define LAYER_LOCK 3
 
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
@@ -29,8 +30,20 @@
 			bindings = <&kp SLASH>, <&kp BACKSLASH>;
 			mods = <(MOD_LSFT|MOD_RSFT)>;
 		};
+		quote_dquote: quote_dquote {
+			compatible = "zmk,behavior-mod-morph";
+			#binding-cells = <0>;
+			bindings = <&kp SINGLE_QUOTE>, <&kp DOUBLE_QUOTES>;
+			mods = <(MOD_LSFT|MOD_RSFT)>;
+		};
+		numsym_quote: numsym_quote {
+			compatible = "zmk,behavior-hold-tap";
+			#binding-cells = <2>;
+			flavor = "balanced";
+			tapping-term-ms = <200>;
+			bindings = <&mo>, <&quote_dquote>;
+		};
 	};
-
 	keymap {
 		compatible = "zmk,keymap";
 		layer_0 {
@@ -38,9 +51,9 @@
 				&sys_off
 				&kp DELETE           &kp DOLLAR       &kp ASTERISK &kp MINUS      &kp UNDERSCORE  &kp EQUAL                &mo LAYER_FUNC &mo LAYER_FUNC &kp LEFT_BRACKET          &kp RIGHT_BRACKET &kp LEFT_PARENTHESIS &kp RIGHT_PARENTHESIS &kp LEFT_BRACE    &kp RIGHT_BRACE
 				&kp TAB              &kp Q            &kp W        &kp E          &kp R           &kp T                    &none          &none          &kp Y                     &kp U             &kp I                &kp O                 &kp P             &kp GRAVE
-				&mo LAYER_NUMSYM     &kp A            &kp S        &kp D          &kp F           &kp G                                                  &kp H                     &kp J             &kp K                &kp L                 &kp SEMICOLON     &mo LAYER_NUMSYM
+				&numsym_quote LAYER_NUMSYM 0 &kp A   &kp S        &kp D          &kp F           &kp G                                                  &kp H                     &kp J             &kp K                &kp L                 &kp SEMICOLON     &numsym_quote LAYER_NUMSYM 0
 				&kp LEFT_SHIFT       &kp Z            &kp X        &kp C          &kp V           &kp B                    &none          &none          &kp N                     &kp M             &comma_qmark         &dot_excl             &slash_bslash         &kp RIGHT_SHIFT
-				&kp LC(LS(LEFT_ALT)) &kp LEFT_CONTROL &kp LEFT_ALT &kp LEFT_ARROW &kp RIGHT_ARROW                                                                                  &kp DOWN_ARROW    &kp UP_ARROW         &kp RIGHT_ALT         &kp RIGHT_CONTROL &kp RC(RS(RIGHT_ALT))
+				&kp LC(LS(LEFT_ALT)) &kp LEFT_CONTROL &kp LEFT_ALT &kp LEFT_ARROW &kp RIGHT_ARROW                                                                                  &kp UP_ARROW      &kp DOWN_ARROW       &kp RIGHT_ALT         &kp RIGHT_CONTROL &kp RC(RS(RIGHT_ALT))
 				                                                                                  &kp LC(LS(LA(LEFT_GUI))) &kp HOME       &kp PAGE_UP    &kp RC(RS(RA(RIGHT_GUI)))
 				                                                                  &kp BACKSPACE   &kp ESCAPE               &kp END        &kp PAGE_DOWN  &kp RETURN                &kp SPACE
 				                                                                                                           &kp LEFT_GUI   &kp RIGHT_GUI
@@ -61,7 +74,7 @@
 		};
 		layer_2 {
 			bindings = <
-				&sys_off
+				&tog LAYER_LOCK
 				&none &none &none             &none            &none           &none            &none &none &none   &none   &none   &none   &none   &none
 				&none &none &kp C_PREVIOUS    &kp C_PLAY_PAUSE &kp C_NEXT      &kp C_BRI_UP     &none &none &kp F12 &kp F7  &kp F8  &kp F9  &none   &none
 				&none &none &kp C_VOLUME_DOWN &kp C_MUTE       &kp C_VOLUME_UP &kp C_BRI_DN                 &kp F11 &kp F4  &kp F5  &kp F6  &none   &none
@@ -70,6 +83,19 @@
 				                                                              &none &none &none &none
 				                                                        &none &none &none &none &none   &none
 				                                                                    &none &none
+			>;
+		};
+		layer_lock {
+			bindings = <
+				&tog LAYER_LOCK
+				&none &none &none &none &none &none &none &none &none &none &none &none &none &none
+				&none &none &none &none &none &none &none &none &none &none &none &none &none &none
+				&none &none &none &none &none &none                   &none &none &none &none &none &none
+				&none &none &none &none &none &none &none &none &none &none &none &none &none &none
+				&none &none &none &none &none                               &none &none &none &none &none
+				                                    &none &none &none &none
+				                              &none &none &none &none &none &none
+				                                          &none &none
 			>;
 		};
 	};
